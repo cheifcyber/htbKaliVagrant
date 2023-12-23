@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.ssh.insert_key = false
-  config.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key", "/home/hoid/htbAttackDeploy/keys/htb.pub"]
+  config.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key", "./keys/htb"]
 
   config.vm.provision "shell", inline: <<-SHELL
     apt update
