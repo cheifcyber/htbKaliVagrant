@@ -11,14 +11,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.ssh.insert_key = false
-  config.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key", "./keys/htb"]
-
-  config.vm.provision "shell", inline: <<-SHELL
-    apt update
-    apt install -y ssh
-    systemctl enable ssh
-    systemctl start ssh
-  SHELL
+  config.ssh.private_key_path = "/home/hoid/htbAttackDeploy/keys/htb.pub"
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "htb.yml"
