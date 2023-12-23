@@ -1,0 +1,4 @@
+.vagrant/
+keys/*
+lab.ovpn
+prompt
