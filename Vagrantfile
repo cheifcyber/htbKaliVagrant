@@ -11,7 +11,9 @@ Vagrant.configure("2") do |config|
   end
 
   config.ssh.insert_key = false
-  config.ssh.private_key_path = "/home/hoid/htbAttackDeploy/keys/htb.pub"
+  config.ssh.private_key_path = "./keys/htb"
+  config.ssh.username = "vagrant"
+  config.ssh.password = "vagrant"
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "htb.yml"
