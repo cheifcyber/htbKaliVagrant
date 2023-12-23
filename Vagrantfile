@@ -10,8 +10,6 @@ Vagrant.configure("2") do |config|
     vb.cpus = 4
   end
 
-  config.ssh.insert_key = false
-  config.ssh.private_key_path = "./keys/htb"
   config.ssh.username = "vagrant"
   config.ssh.password = "vagrant"
 
