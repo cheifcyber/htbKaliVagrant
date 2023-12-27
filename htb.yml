@@ -2,45 +2,79 @@
 - hosts: all
   become: yes
   tasks:
-    - name: Update and upgrade apt packages
+    - name: Install aptitude
       apt:
-        upgrade: yes
-        update_cache: yes
-        cache_valid_time: 3600
+        name: aptitude
+        state: latest
+        update_cache: true
+      become: yes
 
-    - name: Add Docker GPG key
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - gnupg
+          - gpg
+          - python3
+          - python3-pip
+          - openssl
+          - git
+          - tmux
+        state: latest
+        update_cache: true
+      register: output
+      become: yes
+
+    - name: Show results
+      ansible.builtin.debug:
+        var: output
+      become: yes
+
+    - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/debian/gpg
         state: present
+      become: yes
 
-    - name: Add Docker APT repository
+    - name: Add Docker Repository
       apt_repository:
-        repo: deb [arch={{ ansible_architecture }}] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable
+        repo: deb https://download.docker.com/linux/debian bookworm stable
         state: present
-
-    - name: Update apt cache
+      become: yes
+    
+    - name: Install docker and docker compose
       apt:
-        update_cache: yes
-
-    - name: Install packages
-      apt:
-        name:
-          - ca-certificates
-          - curl
-          - gnupg
-          - git
-          - tmux
-          - nano
-          - openvpn
+        pkg:
           - docker-ce
           - docker-ce-cli
+          - docker-compose-plugin
+          - docker-buildx-plugin
           - containerd.io
-        state: present
+        state: latest
+        update_cache: true
+      register: output
+      become: yes
+
+    - name: Show results
+      ansible.builtin.debug:
+        var: output
+      become: yes
 
     - name: Copy OpenVPN configuration file
       copy:
         src: ./lab.ovpn
         dest: /etc/openvpn/client.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Copy Hack The Box Creds
+      copy:
+        src: ./.creds
+        dest: /home/vagrant/creds
         owner: root
         group: root
         mode: '0644'
