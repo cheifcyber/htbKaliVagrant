@@ -73,8 +73,8 @@
 
     - name: Copy Hack The Box Creds
       copy:
-        src: ./.creds
-        dest: /home/vagrant/creds
+        src: ./.cred
+        dest: /home/vagrant/cred
         owner: root
         group: root
         mode: '0644'
